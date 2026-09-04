@@ -19,6 +19,26 @@ Esse treino pode ser feito em várias GPUs, com DDP.
 
 - Dataset já tokenizado em `uint16`: [Hugging Face - TinyStories (tokenizado)](https://huggingface.co/datasets/marcos-j-leemes/tinyS/tree/main)
 
+> O dataset é dividido entre os ranks(GPUs), cada GPU treina o modelo com dados diferentes, após são sincronizados os gradientes
+
+### Fluxo
+
+
+```md
+loss.backward()
+      ↓
+DDP intercepta os gradientes
+      ↓
+DDP chama operações coletivas
+      ↓
+NCCL executa o all-reduce entre GPUs
+      ↓
+Gradientes ficam sincronizados
+      ↓
+optimizer.step()
+
+```
+
 ---
 
 ## Arquitetura do modelo
@@ -74,6 +94,7 @@ torchrun --nproc_per_node=<NUM_GPUS> train_ddp.py
 
 ---
 
+
 ## Próximos passos / TODO
 
 - [ ] Adicionar checkpoints e retomada de treinamento
@@ -84,3 +105,4 @@ torchrun --nproc_per_node=<NUM_GPUS> train_ddp.py
 ## Licença
  
 MIT 
+
