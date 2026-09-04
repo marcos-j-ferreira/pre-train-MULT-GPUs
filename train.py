@@ -38,8 +38,9 @@ import time
 import numpy as np
 
 # Dados
-DATASET = os.path.dirname(os.path.abspath(__file__))
-FILENAME = "train.bin"
+DATASET = os.path.dirname(os.path.abspath(__file__)) # Essa configuração da erro no Kaggle alterar para:
+# DATASET = "" # Essa forma não dar erro
+FILENAME = "train.bin" 
 
 # Configurações do modelo
 VOCAB_SIZE = 10001
